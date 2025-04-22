@@ -1,0 +1,66 @@
+### Create a new doctor appointment
+POST http://localhost:3000/appointments
+Content-Type: application/json
+
+{
+  "patientName": "Rithik Kumar",
+  "doctor": "68075193785fd3f002b96387",
+  "appointmentDate": "2025-04-25",
+  "slotId": 2,
+  "reason": "Regular checkup"
+}
+
+
+
+###
+
+### Get all appointments
+GET http://localhost:3000/appointments
+
+###
+
+### Get a specific appointment by ID
+GET http://localhost:3000/appointments/{{appointmentId}}
+
+###
+
+### Update an appointment
+PUT http://localhost:3000/appointments/680733d6ef321a00216f936d
+Content-Type: application/json
+
+{
+  "reason": "Updated reason: Doctor Busy",
+  "status": "Cancelled"
+}
+
+###
+
+### Delete an appointment
+DELETE http://localhost:3000/appointments/{{appointmentId}}
+
+
+### Add new doctor
+POST http://localhost:3000/doctors
+Content-Type: application/json
+
+{
+  "name": "Dr. ",
+  "specialization": "General Medicine"
+}
+
+
+
+###
+
+### List all doctors
+GET http://localhost:3000/doctors
+
+### List available slots for a doctor on a given date
+GET http://localhost:3000/appointments/available-slots?doctorId=68075193785fd3f002b96387&date=2025-04-25
+Content-Type: application/json
+
+###
+### Get a specific doctor by ID
+
+GET http://localhost:3000/doctors/schedule?doctorId=6807524a96827a55b05a94dc&date=2025-04-25
+Content-Type: application/json
