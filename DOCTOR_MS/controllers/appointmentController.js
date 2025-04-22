@@ -2,7 +2,7 @@ const Appointment = require('../models/Appointments');
 const Doctor = require('../models/Doctor');
 const {DateTime} = require('luxon');
 
-const slots = require('../config/slots'); // import the global slot list
+const { slots } = require('../config/slots'); // import the global slot list
 
 exports.createAppointment = async (req, res) => {
   try {
