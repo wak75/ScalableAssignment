@@ -1,6 +1,24 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { FileCard } from './components/custom/FileCard'
 
 const Medicines = ({ files, setFiles }) => {
+    const [medicineName, setMedicineNames] = useState([])
+  // Load files from localStorage when the component mounts
+  useEffect(() => {
+    const storedFiles = localStorage.getItem('uploadedFiles')
+    if (storedFiles) {
+      setFiles(JSON.parse(storedFiles))
+    }
+  }, [setFiles])
+
+  // Save files to localStorage whenever files state changes
+  useEffect(() => {
+    if (files.length > 0) {
+      localStorage.setItem('uploadedFiles', JSON.stringify(files))
+    }
+  }, [files])
+
   const handleFileChange = (e) => {
     const uploadedFiles = Array.from(e.target.files).map((file) => ({
       name: file.name,
@@ -8,28 +26,21 @@ const Medicines = ({ files, setFiles }) => {
       status: 'new', // Initial status
     }))
     setFiles((prevFiles) => [...prevFiles, ...uploadedFiles])
+    setMedicineNames([])
   }
 
-  const handleSubmit = () => {
-    files.forEach((file, index) => {
-      // Update status to "in progress" after 30 seconds
-      setTimeout(() => {
-        setFiles((prevFiles) =>
-          prevFiles.map((f, i) =>
-            i === index ? { ...f, status: 'in progress' } : f
-          )
-        )
-      }, 30000)
+  const handleSubmit = async () => {
+    try{
+        const response = await axios.get('http://localhost:8080/api/getMedicineDetails')
+        setMedicineNames(response?.data ?? [])
+        setFiles((prevFiles) => prevFiles.map((file) => ({
+            ...file,
+          status: 'success'
+        })));
+    }catch(error){
+      console.error("Error uploading files:", error)
+    }
 
-      // Update status to "success" after 60 seconds
-      setTimeout(() => {
-        setFiles((prevFiles) =>
-          prevFiles.map((f, i) =>
-            i === index ? { ...f, status: 'success' } : f
-          )
-        )
-      }, 60000)
-    })
   }
 
   return (
@@ -60,6 +71,9 @@ const Medicines = ({ files, setFiles }) => {
           Submit
         </button>
       </div>
+
+      {medicineName?.length ? medicineName.map((medicine, index) => <FileCard key={index} title={medicine} />) : <></>}
+      
 
       {/* File Table */}
       {files.length > 0 && (
