@@ -37,7 +37,7 @@ const MyDetails = () => {
       {/* Add a full-width GIF below the table */}
       <div className="mt-6">
         <img
-          src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif"
+          src=""
           alt="Doctors and Patients"
           className="w-full rounded-lg shadow-md"
         />
